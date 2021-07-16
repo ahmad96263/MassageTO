@@ -1,0 +1,20 @@
+import React,  {Component}from 'react'
+import {View,Text, Button} from 'react-native'
+
+
+function Home (props){
+  const { navigate } = props.navigation
+  
+    return(
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>Home Screen</Text>
+        <Button
+        title="Go to list"
+        onPress={() => navigate('contactlist')}
+      />
+      </View>
+        
+        
+    )
+}
+export default Home
