@@ -1,6 +1,7 @@
 import React, { Component, useState, useLayoutEffect } from 'react'
 import { View, Text, Button, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native'
 import { height, totalSize, width } from 'react-native-dimension'
+import { Icon } from 'react-native-elements'
 const dummmyContacts = [
   {
     name: 'Sam Wilson',
@@ -64,7 +65,8 @@ function Home(props) {
                 </View>
                 <View width={width(2.5)} />
                 <View style={{}}>
-                  <Text onPress={() => console.log('delete')} style={{ color: 'red', fontSize: totalSize(1.5) }}>Delete</Text>
+                <Icon name="delete" type="antdesign" size={totalSize(3.5)} color={'red'} />
+                  {/* <Text onPress={() => console.log('delete')} style={{ color: 'red', fontSize: totalSize(1.5) }}>Delete</Text> */}
                 </View>
               </View>
             </View>
