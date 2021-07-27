@@ -33,14 +33,18 @@ function Home(props) {
     navigation.setOptions({
       headerRight: () =>
         <TouchableOpacity
-          onPress={() => navigate('addContact')}
+          onPress={() => navigate('addContact', { item: 'New Item', addContact: (data) => handleAddContact(data) })}
           style={{ paddingHorizontal: width(5) }}>
-          <Text  style={{ color: 'green', fontWeight: 'bold' }}>+ Add</Text>
+          <Text style={{ color: 'green', fontWeight: 'bold' }}>+ Add</Text>
         </TouchableOpacity>
     });
   }, [navigation]);
 
   const [contacts, setContacts] = useState(dummmyContacts)
+
+  const handleAddContact = (data) => {
+    console.log('contact data-->', data)
+  }
   return (
     <View style={{ flex: 1, backgroundColor: 'lightgray' }}>
       <FlatList
@@ -65,7 +69,7 @@ function Home(props) {
                 </View>
                 <View width={width(2.5)} />
                 <View style={{}}>
-                <Icon name="delete" type="antdesign" size={totalSize(3.5)} color={'red'} />
+                  <Icon name="delete" type="antdesign" size={totalSize(3.5)} color={'red'} />
                   {/* <Text onPress={() => console.log('delete')} style={{ color: 'red', fontSize: totalSize(1.5) }}>Delete</Text> */}
                 </View>
               </View>
