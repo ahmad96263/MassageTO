@@ -40,14 +40,26 @@ function Home(props) {
     });
   }, [navigation]);
 
-  const [contacts, setContacts] = useState(dummmyContacts)
-  
-  
-  const handleAddContact = (data) => {
+  const [contacts, setContacts] = useState([])
 
-  setContacts([
-    data])
-    
+
+  const handleAddContact = async (data) => {
+    setContacts([...contacts, data])
+
+
+    //other methode
+    // let tempcontacts = contacts
+    // tempcontacts.unshift(data)
+    // console.log('tempcontacts--->', tempcontacts)
+    // setContacts(tempcontacts)
+
+    // let tempcontacts = contacts
+    // let newContacts = tempcontacts.concat([data])
+    // console.log('newContacts--->', newContacts)
+    // setContacts(newContacts)
+    // console.log('contacts--->', contacts)
+
+    // setContacts(tempcontacts)
   }
   return (
     <View style={{ flex: 1, backgroundColor: 'lightgray' }}>

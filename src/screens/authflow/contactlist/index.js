@@ -24,7 +24,7 @@ function Home(props) {
     const [number, setNumber] = useState('')
     const { navigate, goBack } = props.navigation
     const { params } = props.route
-    console.log('item-->', params.item)
+    //console.log('item-->', params.item)
     console.log('addContact-->', params.addContact)
 
     const launchImagePicker = () => {
@@ -64,17 +64,22 @@ function Home(props) {
                     type: response.type
                 }
 
-                setImageFile(tempImageFile)
+                console.log('tempImageFile--->', tempImageFile)
+                setImageFile(response.uri)
             }
         });
     }
 
     const handleAddContact = () => {
-        const tempContact = {
-            name: name,
-            number: number,
-            image: imageFile
-        }
+        // const tempContact = {
+        //     name: name,
+        //     number: number,
+        //     image: imageFile
+        // }
+        let tempContact = {}
+        tempContact['name'] = name
+        tempContact['number'] = number
+        tempContact['image'] = imageFile
         const { addContact } = params
         addContact(tempContact)
         goBack()
