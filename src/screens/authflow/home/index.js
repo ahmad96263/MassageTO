@@ -3,26 +3,26 @@ import { View, Text, Button, StyleSheet, FlatList, Image, TouchableOpacity } fro
 import { height, totalSize, width } from 'react-native-dimension'
 import { Icon } from 'react-native-elements'
 const dummmyContacts = [
-  {
-    name: 'Sam Wilson',
-    number: '+17062364443434',
-    image: 'https://images.everydayhealth.com/images/mens-health/6-skincare-tips-men-should-always-follow-peter-kraus-00-722x406.jpg'
-  },
-  {
-    name: 'Jackobe Black',
-    number: '+1672454545545',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsolwYGDMTvwDOGplKGWB39zyZlLt9C3HKkWUUm9kDnXoaS2YABobnDL9Xgp16fLX8pq8&usqp=CAU'
-  },
-  {
-    name: 'Austin Martin',
-    number: '+18992454545545',
-    image: 'https://media.istockphoto.com/photos/hell-melt-your-heart-picture-id1071323266?k=6&m=1071323266&s=612x612&w=0&h=ML48RaVvzNWGhJmzgK4zvbdFpdJUGJdUb2LVbLtL_zQ='
-  },
-  {
-    name: 'Shaw Wilsone',
-    number: '+13652454545545',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSisokyWBA5xmv183FUXaEjhFbnoAPvKPFaLvQ1aSSjoPX_5QNb-bVn4E7xi6rNJjJo_Sk&usqp=CAU'
-  }
+  // {
+  //   name: 'Sam Wilson',
+  //   number: '+17062364443434',
+  //   image: 'https://images.everydayhealth.com/images/mens-health/6-skincare-tips-men-should-always-follow-peter-kraus-00-722x406.jpg'
+  // },
+  // {
+  //   name: 'Jackobe Black',
+  //   number: '+1672454545545',
+  //   image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsolwYGDMTvwDOGplKGWB39zyZlLt9C3HKkWUUm9kDnXoaS2YABobnDL9Xgp16fLX8pq8&usqp=CAU'
+  // },
+  // {
+  //   name: 'Austin Martin',
+  //   number: '+18992454545545',
+  //   image: 'https://media.istockphoto.com/photos/hell-melt-your-heart-picture-id1071323266?k=6&m=1071323266&s=612x612&w=0&h=ML48RaVvzNWGhJmzgK4zvbdFpdJUGJdUb2LVbLtL_zQ='
+  // },
+  // {
+  //   name: 'Shaw Wilsone',
+  //   number: '+13652454545545',
+  //   image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSisokyWBA5xmv183FUXaEjhFbnoAPvKPFaLvQ1aSSjoPX_5QNb-bVn4E7xi6rNJjJo_Sk&usqp=CAU'
+  // }
 ]
 
 function Home(props) {
@@ -33,7 +33,7 @@ function Home(props) {
     navigation.setOptions({
       headerRight: () =>
         <TouchableOpacity
-          onPress={() => navigate('addContact', { item: 'New Item', addContact: (data) => handleAddContact(data) })}
+          onPress={() => navigate('addContact', { addContact: (data) => handleAddContact(data) })}
           style={{ paddingHorizontal: width(5) }}>
           <Text style={{ color: 'green', fontWeight: 'bold' }}>+ Add</Text>
         </TouchableOpacity>
@@ -41,9 +41,13 @@ function Home(props) {
   }, [navigation]);
 
   const [contacts, setContacts] = useState(dummmyContacts)
-
+  
+  
   const handleAddContact = (data) => {
-    console.log('contact data-->', data)
+
+  setContacts([
+    data])
+    
   }
   return (
     <View style={{ flex: 1, backgroundColor: 'lightgray' }}>
