@@ -5,6 +5,7 @@ import * as ImagePicker from 'react-native-image-picker'
 import { Image } from 'react-native'
 import { height, totalSize } from 'react-native-dimension'
 import { TouchableOpacity } from 'react-native'
+import Toast from 'react-native-simple-toast';
 
 const noUserImage = 'https://icon-library.com/images/no-user-image-icon/no-user-image-icon-27.jpg'
 const options = {
@@ -82,8 +83,10 @@ function Home(props) {
         tempContact['image'] = imageFile
         const { addContact } = params
         addContact(tempContact)
+        Toast.show('Contact has been added');
         goBack()
     }
+   
     return (
 
         <View style={{ backgroundColor: '#FFFFFF' }}>
@@ -130,6 +133,7 @@ function Home(props) {
                 title="Add Contact"
                 //onPress={() => navigate('home')}
                 onPress={handleAddContact}
+            
             />
         </View>
     )

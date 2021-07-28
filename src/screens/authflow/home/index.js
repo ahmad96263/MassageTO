@@ -44,7 +44,9 @@ function Home(props) {
 
 
   const handleAddContact = async (data) => {
-    setContacts([...contacts, data])
+    setContacts([...contacts, data]);
+
+    
 
 
     //other methode
@@ -61,6 +63,12 @@ function Home(props) {
 
     // setContacts(tempcontacts)
   }
+  const deleteContact = (index) => {
+    let deletecopy = [...contacts];
+    deletecopy.splice (index, 1),
+  setContacts(deletecopy);
+  }
+  
   return (
     <View style={{ flex: 1, backgroundColor: 'lightgray' }}>
       <FlatList
@@ -85,7 +93,7 @@ function Home(props) {
                 </View>
                 <View width={width(2.5)} />
                 <View style={{}}>
-                  <Icon name="delete" type="antdesign" size={totalSize(3.5)} color={'red'} />
+                  <Icon key={index} onPress={()=>deleteContact(index)} name="delete" type="antdesign" size={totalSize(3.5)} color={'red'} />
                   {/* <Text onPress={() => console.log('delete')} style={{ color: 'red', fontSize: totalSize(1.5) }}>Delete</Text> */}
                 </View>
               </View>
