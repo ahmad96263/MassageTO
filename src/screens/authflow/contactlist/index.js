@@ -9,7 +9,7 @@ import Toast from 'react-native-simple-toast';
 import Modal from 'react-native-modal';
 import { Icon } from 'react-native-elements'
 import { width } from 'react-native-dimension'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 
 
@@ -88,25 +88,28 @@ function Home(props) {
         let tempContact = {}
         tempContact['image'] = imageFile
         if (imageFile == null) {
-            alert("please select image")
+            //  alert("please select image")
+            Toast.show('please select image');
             return false
         }
         tempContact['name'] = name
         if (name == "") {
-            alert("please fill name")
+            // alert("please fill name")
+            Toast.show('please fill name');
             return false
         }
 
         tempContact['number'] = number
         if (number == "") {
-            alert("please fill number")
+            //  alert("please fill number")
+            Toast.show('please fill number');
             return false
         }
 
         const { addContact } = params
 
         addContact(tempContact)
-          
+
         goBack()
         Toast.show('Contact has been added');
     }
@@ -136,17 +139,26 @@ function Home(props) {
             <View >
                 <View style={{ alignItems: 'center', paddingVertical: height(2) }}>
                     <TouchableOpacity
-                       
+                        style={{ alignItems: 'center', justifyContent: 'center' }}
+                        onPress={toggleModal}
                     >
-                       <View style={{}}>
-                       <Icon onPress={toggleModal} name="camerao" type="antdesign" size={totalSize(3.5)} color={'red'}  />
-                       </View>
-                       <View style={{}}>
-                       <Image 
-                            source={{ uri: imageFile ? imageFile : noUserImage }}
-                            style={{ height: totalSize(15), width: totalSize(15), borderRadius: 100 }}
-                        />
-                       </View>
+
+                        <View style={{ height: totalSize(20), width: totalSize(20), backgroundColor: '#f1f1f1', borderRadius: 100 }}>{
+                            imageFile ?
+                                <Image
+                                    source={{ uri: imageFile }}
+                                    style={{ height: totalSize(20), width: totalSize(20), borderRadius: 100 }}
+                                />
+                                :
+                                null
+                        }
+                            <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
+                                <Icon name="camerao" type="antdesign" size={totalSize(5)} color={'#FFFFFF'} />
+                            </View>
+                        </View>
+
+
+
                     </TouchableOpacity>
                 </View>
                 <View>
@@ -185,28 +197,34 @@ function Home(props) {
                 onPress={handleAddContact}
 
             />
-            <Modal isVisible={isModalVisible}>
+            <Modal 
+            isVisible={isModalVisible}
+            style={{margin:0}}
+            onBackdropPress={toggleModal}
+            swipeDirection="down"
+            onSwipeComplete={toggleModal}
+            >
                 <View style={{ backgroundColor: 'white', marginTop: 300, flex: 1, borderRadius: (10) }}>
 
                     <View>
-                    <Text style={{fontSize:15,textAlign:'center',fontWeight:'bold'}} >Choose profile image</Text>
+                        <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold' }} >Choose profile image</Text>
                     </View>
-                  
-                    <TouchableOpacity  onPress={() => launchCamera()}  style={{ height: height(8), marginHorizontal: width(5), borderRadius: (10), borderColor: 'grey', borderWidth: (1.5), alignItems: 'center', justifyContent: 'center',marginTop:10 }}>
-            <Text style={{ color:'black' , fontSize: totalSize(1.7), fontWeight: '500',fontWeight:'bold' }}>Take Photo</Text>
-        </TouchableOpacity>
-        <TouchableOpacity  onPress={() => launchImagePicker()} style={{ height: height(8), marginHorizontal: width(5), borderRadius: (10), borderColor: 'grey', borderWidth: (1.5), alignItems: 'center', justifyContent: 'center',marginTop:10 }}>
-            <Text style={{ color: 'black', fontSize: totalSize(1.7), fontWeight: '500',fontWeight:'bold' }}>Select from gallery</Text>
-        </TouchableOpacity>
-        <TouchableOpacity  onPress={toggleModal} style={{ height: height(8), marginHorizontal: width(5), borderRadius: (10), borderColor: 'grey', borderWidth: (1.5), alignItems: 'center', justifyContent: 'center',marginTop:10 }}>
-            <Text style={{ color: 'black', fontSize: totalSize(1.7), fontWeight: '500',fontWeight:'bold' }}>cancel</Text>
-        </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => { toggleModal(), launchCamera() }} style={{ height: height(8), marginHorizontal: width(5), borderRadius: (10), borderColor: 'grey', borderWidth: (1.5), alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
+                        <Text style={{ color: 'black', fontSize: totalSize(1.7), fontWeight: '500', fontWeight: 'bold' }}>Take Photo</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => { toggleModal(), launchImagePicker() }} style={{ height: height(8), marginHorizontal: width(5), borderRadius: (10), borderColor: 'grey', borderWidth: (1.5), alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
+                        <Text style={{ color: 'black', fontSize: totalSize(1.7), fontWeight: '500', fontWeight: 'bold' }}>Select from gallery</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={toggleModal} style={{ height: height(8), marginHorizontal: width(5), borderRadius: (10), borderColor: 'grey', borderWidth: (1.5), alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
+                        <Text style={{ color: 'black', fontSize: totalSize(1.7), fontWeight: '500', fontWeight: 'bold' }}>cancel</Text>
+                    </TouchableOpacity>
 
 
-                    
+
                 </View>
             </Modal>
-        </View>
+        </View >
     )
 }
 export default Home
@@ -220,12 +238,12 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: '#F2F2F2',
         padding: 8,
-        marginRight: 15,
-        marginLeft: 15,
+        marginRight: 20,
+        marginLeft: 20,
         marginVertical: 4,
 
     },
     place: {
-        marginLeft: 15
+        marginLeft: 20
     }
 })

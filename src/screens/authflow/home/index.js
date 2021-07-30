@@ -1,7 +1,8 @@
-import React, { Component, useState, useLayoutEffect } from 'react'
+import React, { Component, useState, useLayoutEffect, useEffect } from 'react'
 import { View, Text, Button, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native'
 import { height, totalSize, width } from 'react-native-dimension'
 import { Icon } from 'react-native-elements'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 const dummmyContacts = [
   // {
   //   name: 'Sam Wilson',
@@ -29,6 +30,12 @@ function Home(props) {
   const { navigation } = props
   const { navigate } = navigation
 
+  const [contacts, setContacts] = useState([])
+
+
+
+
+  //configure header
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () =>
@@ -38,15 +45,29 @@ function Home(props) {
           <Text style={{ color: 'green', fontWeight: 'bold' }}>+ Add</Text>
         </TouchableOpacity>
     });
-  }, [navigation]);
+  }, [navigation, contacts]);
 
-  const [contacts, setContacts] = useState([])
+
+  useEffect(() => {
+    getSetContacts()
+  }, [])
+
+  const getSetContacts = async () => {
+    const contacts = await AsyncStorage.getItem('CONTACTS')
+    if (contacts) {
+      setContacts(JSON.parse(contacts))
+    } else {
+
+    }
+  }
 
 
   const handleAddContact = async (data) => {
-    setContacts([...contacts, data]);
-
-    
+    console.log('new contact object-->', data)
+    console.log('old contacts-->', contacts)
+    const newContacts = [...contacts, data]
+    setContacts(newContacts);
+    AsyncStorage.setItem('CONTACTS', JSON.stringify(newContacts))
 
 
     //other methode
@@ -63,44 +84,63 @@ function Home(props) {
 
     // setContacts(tempcontacts)
   }
+
   const deleteContact = (index) => {
     let deletecopy = [...contacts];
-    deletecopy.splice (index, 1),
-  setContacts(deletecopy);
+    deletecopy.splice(index, 1);
+    setContacts(deletecopy);
+    AsyncStorage.setItem('CONTACTS', JSON.stringify(deletecopy))
   }
-  
+
   return (
     <View style={{ flex: 1, backgroundColor: 'lightgray' }}>
-      <FlatList
-        data={contacts}
-        key="key"
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) => {
-          return (
-            <View style={{ marginHorizontal: width(5), backgroundColor: '#FFFFFF', borderRadius: 10, paddingVertical: 10, paddingHorizontal: 10, marginTop: 10 }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={{}}>
-                  <Image
-                    source={{ uri: item.image }}
-                    style={{ height: 50, width: 50, borderRadius: 100 }}
-                  />
+      {
+        contacts.length ?
+          <FlatList
+            data={contacts}
+            key="key"
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item, index }) => {
+              return (
+                <View style={{ marginHorizontal: width(5), backgroundColor: '#FFFFFF', borderRadius: 10, paddingVertical: 10, paddingHorizontal: 10, marginTop: 10 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{}}>
+                      <Image
+                        source={{ uri: item.image }}
+                        style={{ height: 50, width: 50, borderRadius: 100 }}
+                      />
+                    </View>
+                    <View width={width(2.5)} />
+                    <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+                      <Text style={{ fontSize: totalSize(2), fontWeight: 'bold' }}>{item.name}</Text>
+                      <View height={height(1)} />
+                      <Text style={{ fontSize: totalSize(1.75) }}>{item.number}</Text>
+                    </View>
+                    <View width={width(2.5)} />
+                    <View style={{}}>
+                      <Icon key={index} onPress={() => deleteContact(index)} name="delete" type="antdesign" size={totalSize(3.5)} color={'red'} />
+                      {/* <Text onPress={() => console.log('delete')} style={{ color: 'red', fontSize: totalSize(1.5) }}>Delete</Text> */}
+                    </View>
+                  </View>
                 </View>
-                <View width={width(2.5)} />
-                <View style={{ flex: 1, backgroundColor: 'transparent' }}>
-                  <Text style={{ fontSize: totalSize(2), fontWeight: 'bold' }}>{item.name}</Text>
-                  <View height={height(1)} />
-                  <Text style={{ fontSize: totalSize(1.75) }}>{item.number}</Text>
-                </View>
-                <View width={width(2.5)} />
-                <View style={{}}>
-                  <Icon key={index} onPress={()=>deleteContact(index)} name="delete" type="antdesign" size={totalSize(3.5)} color={'red'} />
-                  {/* <Text onPress={() => console.log('delete')} style={{ color: 'red', fontSize: totalSize(1.5) }}>Delete</Text> */}
-                </View>
-              </View>
-            </View>
-          )
-        }}
-      />
+              )
+            }}
+          />
+          :
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <TouchableOpacity
+              onPress={() => navigate('addContact', { addContact: (data) => handleAddContact(data) })}
+              style={{ alignItems: 'center', justifyContent: 'center' }}>
+              <Icon
+                name="add-circle"
+                size={totalSize(10)}
+                color="green"
+              />
+              <View style={{ height: height(1) }} />
+              <Text>Add Contact Now</Text>
+            </TouchableOpacity>
+          </View>
+      }
     </View>
   )
 }
