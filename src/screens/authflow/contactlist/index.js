@@ -93,7 +93,7 @@ function Home(props) {
             Toast.show('please select image');
             return false
         }
-        tempContact['name'] = name
+        tempContact['name'] = name+' '+lstname
         if (name == "") {
             // alert("please fill name")
             Toast.show('please fill name');
