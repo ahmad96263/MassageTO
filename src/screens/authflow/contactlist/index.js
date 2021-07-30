@@ -30,6 +30,7 @@ const options = {
 function Home(props) {
     const [imageFile, setImageFile] = useState(null)
     const [name, setName] = useState('')
+    const [lstname, setLstName] = useState('')
     const [number, setNumber] = useState('')
     const { navigate, goBack } = props.navigation
     const { params } = props.route
@@ -98,6 +99,12 @@ function Home(props) {
             Toast.show('please fill name');
             return false
         }
+        tempContact['lstname'] = lstname
+        if (lstname == "") {
+            // alert("please fill name")
+            Toast.show('please fill name');
+            return false
+        }
 
         tempContact['number'] = number
         if (number == "") {
@@ -161,22 +168,39 @@ function Home(props) {
 
                     </TouchableOpacity>
                 </View>
-                <View>
-                    <Text style={styles.place}>Name</Text>
-                    <TextInput style={styles.input}
-                        placeholder=""
-                        value={name}
-                        onChangeText={text => setName(text)}
+                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                    <View style={{ flex: 1 }}>
+                        <Text style={styles.place}>First Name</Text>
+                       <View style={{}}>
+                       <TextInput style={styles.input}
+                            placeholder=""
+                            value={name}
+                            onChangeText={text => setName(text)}
 
-                    />
+                        />
+                       </View>
+                    </View>
+                    <View style={{ flex: 1 }}>
+                        <Text style={styles.place}>Last Name</Text>
+                        <View style={{}}>
+                        <TextInput style={styles.input}
+                            placeholder=""
+                            value={lstname}
+                            onChangeText={text =>  setLstName(text)}
+                        />
+                        </View>
+                    </View>
+
                 </View>
-                <View>
-                    <Text style={styles.place}>Mobile No</Text>
-                    <TextInput style={styles.input}
-                        placeholder=""
-                        value={number}
-                        onChangeText={text => setNumber(text)}
-                    />
+                <View style={{}}>
+                    <Text style={styles.place}>Phone Number</Text>
+                    <View style={{}}>
+                        <TextInput style={styles.input}
+                            placeholder=""
+                            value={number}
+                            onChangeText={text => setNumber(text)}
+                        />
+                    </View>
                 </View>
                 {/* <View>
                     <Text  style={styles.place}>Image url</Text>
@@ -190,6 +214,7 @@ function Home(props) {
 
             </View>
 
+
             <Button style={styles.input}
                 title="Add Contact"
                 //onPress={() => navigate('home')}
@@ -197,12 +222,12 @@ function Home(props) {
                 onPress={handleAddContact}
 
             />
-            <Modal 
-            isVisible={isModalVisible}
-            style={{margin:0}}
-            onBackdropPress={toggleModal}
-            swipeDirection="down"
-            onSwipeComplete={toggleModal}
+            <Modal
+                isVisible={isModalVisible}
+                style={{ margin: 0 }}
+                onBackdropPress={toggleModal}
+                swipeDirection="down"
+                onSwipeComplete={toggleModal}
             >
                 <View style={{ backgroundColor: 'white', marginTop: 300, flex: 1, borderRadius: (10) }}>
 
@@ -232,18 +257,23 @@ export default Home
 const styles = StyleSheet.create({
     TextInput: {
         flex: 1,
-        backgroundColor: 'green'
+
+        
+        
 
     },
     input: {
-        backgroundColor: '#F2F2F2',
+        backgroundColor: 'white',
         padding: 8,
         marginRight: 20,
         marginLeft: 20,
         marginVertical: 4,
+        borderBottomWidth:1,
+        
 
     },
     place: {
-        marginLeft: 20
+        marginLeft: 20,
+        color:'blue'
     }
 })
