@@ -1,11 +1,18 @@
-import React, { useState } from 'react'
-import { View, Text, Button, TextInput, StyleSheet } from 'react-native'
+import React, { useState, Component } from 'react'
+import { View, Text, Button, TextInput, StyleSheet, Alert } from 'react-native'
 import { TextInputPrimary } from '../../../components/textinputs'
 import * as ImagePicker from 'react-native-image-picker'
 import { Image } from 'react-native'
 import { height, totalSize } from 'react-native-dimension'
 import { TouchableOpacity } from 'react-native'
 import Toast from 'react-native-simple-toast';
+import Modal from 'react-native-modal';
+import { Icon } from 'react-native-elements'
+import { width } from 'react-native-dimension'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+
+
 
 const noUserImage = 'https://icon-library.com/images/no-user-image-icon/no-user-image-icon-27.jpg'
 const options = {
@@ -19,6 +26,7 @@ const options = {
         path: 'images',
     },
 };
+
 function Home(props) {
     const [imageFile, setImageFile] = useState(null)
     const [name, setName] = useState('')
@@ -78,41 +86,82 @@ function Home(props) {
         //     image: imageFile
         // }
         let tempContact = {}
-        tempContact['name'] = name
-        tempContact['number'] = number
         tempContact['image'] = imageFile
+        if (imageFile == null) {
+            alert("please select image")
+            return false
+        }
+        tempContact['name'] = name
+        if (name == "") {
+            alert("please fill name")
+            return false
+        }
+
+        tempContact['number'] = number
+        if (number == "") {
+            alert("please fill number")
+            return false
+        }
+
         const { addContact } = params
+
         addContact(tempContact)
-        Toast.show('Contact has been added');
+          
         goBack()
+        Toast.show('Contact has been added');
     }
-   
+    const [isModalVisible, setModalVisible] = useState(false);
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
+
+    // validate_field=()=>{
+
+    //     if (name ==""){
+    //         Alert.alert("please fill name")
+    //         return false
+    //     } else if ( number==""){
+    //         Alert.alert("please fill number")
+    //         return false  
+    //     }else if ( imageFile==""){
+    //         Alert.alert("please select image")
+    //         return false  
+    //     }
+    //     return true
+    // }
+
     return (
 
-        <View style={{ backgroundColor: '#FFFFFF' }}>
-            <View>
+        <View style={{ backgroundColor: '#FFFFFF' }} >
+            <View >
                 <View style={{ alignItems: 'center', paddingVertical: height(2) }}>
                     <TouchableOpacity
-                        onPress={() => launchImagePicker()}
+                       
                     >
-                        <Image
+                       <View style={{}}>
+                       <Icon onPress={toggleModal} name="camerao" type="antdesign" size={totalSize(3.5)} color={'red'}  />
+                       </View>
+                       <View style={{}}>
+                       <Image 
                             source={{ uri: imageFile ? imageFile : noUserImage }}
                             style={{ height: totalSize(15), width: totalSize(15), borderRadius: 100 }}
                         />
+                       </View>
                     </TouchableOpacity>
                 </View>
                 <View>
                     <Text style={styles.place}>Name</Text>
                     <TextInput style={styles.input}
-                        placeholder="abc"
+                        placeholder=""
                         value={name}
                         onChangeText={text => setName(text)}
+
                     />
                 </View>
                 <View>
                     <Text style={styles.place}>Mobile No</Text>
                     <TextInput style={styles.input}
-                        placeholder="00000000"
+                        placeholder=""
                         value={number}
                         onChangeText={text => setNumber(text)}
                     />
@@ -132,9 +181,31 @@ function Home(props) {
             <Button style={styles.input}
                 title="Add Contact"
                 //onPress={() => navigate('home')}
+
                 onPress={handleAddContact}
-            
+
             />
+            <Modal isVisible={isModalVisible}>
+                <View style={{ backgroundColor: 'white', marginTop: 300, flex: 1, borderRadius: (10) }}>
+
+                    <View>
+                    <Text style={{fontSize:15,textAlign:'center',fontWeight:'bold'}} >Choose profile image</Text>
+                    </View>
+                  
+                    <TouchableOpacity  onPress={() => launchCamera()}  style={{ height: height(8), marginHorizontal: width(5), borderRadius: (10), borderColor: 'grey', borderWidth: (1.5), alignItems: 'center', justifyContent: 'center',marginTop:10 }}>
+            <Text style={{ color:'black' , fontSize: totalSize(1.7), fontWeight: '500',fontWeight:'bold' }}>Take Photo</Text>
+        </TouchableOpacity>
+        <TouchableOpacity  onPress={() => launchImagePicker()} style={{ height: height(8), marginHorizontal: width(5), borderRadius: (10), borderColor: 'grey', borderWidth: (1.5), alignItems: 'center', justifyContent: 'center',marginTop:10 }}>
+            <Text style={{ color: 'black', fontSize: totalSize(1.7), fontWeight: '500',fontWeight:'bold' }}>Select from gallery</Text>
+        </TouchableOpacity>
+        <TouchableOpacity  onPress={toggleModal} style={{ height: height(8), marginHorizontal: width(5), borderRadius: (10), borderColor: 'grey', borderWidth: (1.5), alignItems: 'center', justifyContent: 'center',marginTop:10 }}>
+            <Text style={{ color: 'black', fontSize: totalSize(1.7), fontWeight: '500',fontWeight:'bold' }}>cancel</Text>
+        </TouchableOpacity>
+
+
+                    
+                </View>
+            </Modal>
         </View>
     )
 }
